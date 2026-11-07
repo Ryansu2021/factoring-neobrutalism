@@ -1,0 +1,479 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>十字交乘因式分解 - 新粗野主義版</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;700;900&display=swap" rel="stylesheet">
+    <style>
+        body { 
+            font-family: 'Noto Sans TC', sans-serif; 
+            background-color: #f4f4f0; 
+            background-image: radial-gradient(#d1d1d1 1px, transparent 0);
+            background-size: 20px 20px;
+        }
+        /* 新粗野主義核心樣式 */
+        .neo-border { border: 3px solid #111; }
+        .neo-shadow { box-shadow: 6px 6px 0px 0px #111; }
+        .neo-shadow-sm { box-shadow: 3px 3px 0px 0px #111; }
+        .neo-btn { 
+            transition: all 0.1s; 
+            border: 3px solid #111; 
+            box-shadow: 4px 4px 0px 0px #111;
+            cursor: pointer;
+        }
+        .neo-btn:active {
+            transform: translate(4px, 4px);
+            box-shadow: 0px 0px 0px 0px #111;
+        }
+        .math-font { font-family: 'Courier New', Courier, monospace; font-weight: 900; }
+        
+        /* 隱藏數字輸入框的上下箭頭 */
+        input[type=number]::-webkit-inner-spin-button, 
+        input[type=number]::-webkit-outer-spin-button { 
+            -webkit-appearance: none; 
+            margin: 0; 
+        }
+    </style>
+</head>
+<body class="text-slate-900 min-h-screen p-4 md:p-8">
+
+    <main class="max-w-5xl mx-auto">
+        <!-- 標題與分頁按鈕 -->
+        <header class="mb-8">
+            <h1 class="text-3xl md:text-5xl font-black mb-6 bg-white inline-block px-4 py-2 neo-border neo-shadow uppercase tracking-wider">
+                因式分解（係數 a≠1）
+            </h1>
+            <div class="flex flex-wrap gap-4">
+                <button onclick="switchTab('concept')" id="tab-concept" class="neo-btn bg-[#FFD60A] px-6 py-3 text-lg font-black rounded-none">
+                    📜 觀念與實驗
+                </button>
+                <button onclick="switchTab('challenge')" id="tab-challenge" class="neo-btn bg-white px-6 py-3 text-lg font-black rounded-none">
+                    ⚔️ 實戰闖關 (10連戰)
+                </button>
+            </div>
+        </header>
+
+        <!-- ==================== 區域 1: 觀念與實驗室 ==================== -->
+        <section id="sec-concept" class="space-y-8 block">
+            
+            <!-- 觀念解析 -->
+            <div class="bg-white neo-border neo-shadow p-6 md:p-8 relative">
+                <div class="absolute -top-4 -right-4 bg-[#E11D74] text-white px-4 py-1 neo-border font-black text-xl rotate-3">
+                    經典必學！
+                </div>
+                <h2 class="text-2xl md:text-3xl font-black mb-6 bg-[#06D6A0] inline-block px-4 py-2 neo-border">
+                    觀念解析：首尾相乘拆中間項法
+                </h2>
+                
+                <div class="space-y-5 text-lg font-bold">
+                    <p>面對二次項係數不是 1 的多項式，我們以 <span class="math-font text-2xl px-2 bg-slate-200 neo-border">6x² + 7x - 3</span> 為例：</p>
+                    
+                    <div class="bg-[#f4f4f0] p-5 neo-border neo-shadow-sm flex flex-col md:flex-row gap-4">
+                        <div class="flex-1">
+                            <span class="bg-[#FFD60A] px-2 py-1 neo-border">第一步</span>
+                            <p class="mt-2">將首尾數字相乘 (a × c)：</p>
+                            <p class="math-font text-xl mt-1">6 × (-3) = <span class="text-[#E11D74]">-18</span></p>
+                        </div>
+                        <div class="flex-1">
+                            <span class="bg-[#FFD60A] px-2 py-1 neo-border">第二步</span>
+                            <p class="mt-2">找兩數「相乘 = -18」、「相加 = +7」：</p>
+                            <p class="text-xl mt-1">鎖定數字 <span class="math-font text-[#E11D74] text-2xl">+9</span> 與 <span class="math-font text-[#E11D74] text-2xl">-2</span></p>
+                        </div>
+                    </div>
+
+                    <div class="bg-white p-5 neo-border neo-shadow-sm border-t-8 border-t-[#06D6A0]">
+                        <span class="bg-[#06D6A0] text-white px-2 py-1 neo-border">第三步：拆項與分組（重點）</span>
+                        <div class="mt-4 space-y-2 math-font text-xl md:text-2xl">
+                            <p>  6x² + 7x - 3</p>
+                            <p>= 6x² <span class="text-[#E11D74]">+ 9x - 2x</span> - 3</p>
+                            <p>= <span class="text-blue-600">3x</span><span class="bg-green-100 px-1">(2x + 3)</span> <span class="text-[#E11D74]">-</span> <span class="bg-green-100 px-1">(2x + 3)</span></p>
+                            <p class="text-sm font-sans text-gray-500 font-bold mt-1 mb-3">⚠️ 提示：後兩項提出負號時，括號內要變號，且係數 1 省略不寫！</p>
+                            <p class="font-black text-3xl bg-[#FFD60A] inline-block px-3 py-1 neo-border tracking-wider">
+                                = (2x + 3)(3x - 1)
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 拆項實驗室 -->
+            <div class="bg-[#FFD60A] neo-border neo-shadow p-6 md:p-8">
+                <h3 class="text-2xl md:text-3xl font-black mb-2 flex items-center gap-2">
+                    ⚗️ 拆項實驗室
+                </h3>
+                <p class="font-bold text-lg mb-6">隨意輸入 a, b, c，看看程式如何自動幫你完美分組！</p>
+                
+                <div class="flex items-center gap-2 md:gap-4 math-font text-xl md:text-2xl flex-wrap bg-white p-4 neo-border neo-shadow-sm">
+                    <input id="lab-a" type="number" value="4" class="w-16 md:w-20 px-2 py-2 neo-border text-center bg-gray-50 focus:bg-white focus:outline-none"> 
+                    <span class="font-black">x² + </span>
+                    <input id="lab-b" type="number" value="-4" class="w-16 md:w-20 px-2 py-2 neo-border text-center bg-gray-50 focus:bg-white focus:outline-none"> 
+                    <span class="font-black">x + </span>
+                    <input id="lab-c" type="number" value="-15" class="w-16 md:w-20 px-2 py-2 neo-border text-center bg-gray-50 focus:bg-white focus:outline-none">
+                    <button onclick="runLab()" class="neo-btn bg-[#E11D74] text-white px-6 py-2 ml-auto font-sans font-black tracking-wider">
+                        執行分解！
+                    </button>
+                </div>
+                
+                <!-- 實驗結果區 -->
+                <div id="lab-result" class="hidden mt-6 bg-white p-5 md:p-6 neo-border neo-shadow-sm text-lg space-y-4">
+                    <!-- Javascript 將結果注入此處 -->
+                </div>
+            </div>
+        </section>
+
+        <!-- ==================== 區域 2: 實戰闖關 ==================== -->
+        <section id="sec-challenge" class="hidden space-y-6">
+            
+            <div class="bg-[#06D6A0] neo-border neo-shadow p-6 md:p-8">
+                <div class="flex flex-wrap justify-between items-center mb-6 gap-4">
+                    <h2 class="text-2xl md:text-3xl font-black text-slate-900 flex items-center gap-2">
+                        ⚔️ 終極討伐 (10 連戰)
+                    </h2>
+                    <span id="wave-counter" class="bg-white px-4 py-2 neo-border font-black text-xl shadow-[2px_2px_0px_0px_#111]">
+                        第 1 / 10 波
+                    </span>
+                </div>
+                
+                <!-- 題目顯示區 -->
+                <div class="bg-white p-8 neo-border neo-shadow-sm text-center mb-6 relative">
+                    <div class="absolute -top-3 left-1/2 -translate-x-1/2 bg-[#111] text-white px-3 py-1 font-bold text-sm tracking-widest uppercase">
+                        當前魔物目標
+                    </div>
+                    <div id="challenge-poly" class="text-4xl md:text-5xl mt-2 font-black math-font tracking-wider">
+                        5x² - 13x - 6
+                    </div>
+                </div>
+
+                <!-- 草稿區開關 -->
+                <button onclick="toggleDraft()" class="neo-btn bg-[#FFD60A] px-5 py-2 font-black mb-4 text-sm md:text-base">
+                    📝 展開 / 收合 草稿陣法 (不計分)
+                </button>
+                
+                <!-- 草稿區 -->
+                <div id="draft-area" class="hidden bg-white p-5 neo-border neo-shadow-sm mb-6 flex flex-wrap gap-6 items-end">
+                    <div class="flex flex-col gap-1">
+                        <label class="font-bold text-sm bg-gray-200 inline-block px-2 py-0.5 border border-black">首尾相乘 (a×c)</label>
+                        <input type="number" class="w-24 px-2 py-2 neo-border text-center math-font font-bold text-lg bg-gray-50 focus:outline-none focus:bg-white">
+                    </div>
+                    <div class="flex flex-col gap-1">
+                        <label class="font-bold text-sm bg-gray-200 inline-block px-2 py-0.5 border border-black">中間項 (b)</label>
+                        <input type="number" class="w-24 px-2 py-2 neo-border text-center math-font font-bold text-lg bg-gray-50 focus:outline-none focus:bg-white">
+                    </div>
+                    <div class="flex flex-col gap-1">
+                        <label class="font-bold text-sm bg-gray-200 inline-block px-2 py-0.5 border border-black">召喚出的雙星 (m, n)</label>
+                        <div class="flex gap-2">
+                            <input type="number" class="w-20 px-2 py-2 neo-border text-center math-font font-bold text-lg bg-gray-50 focus:outline-none focus:bg-white">
+                            <input type="number" class="w-20 px-2 py-2 neo-border text-center math-font font-bold text-lg bg-gray-50 focus:outline-none focus:bg-white">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 答案輸入區 -->
+                <div class="bg-white p-6 md:p-8 neo-border neo-shadow-sm mb-6 flex flex-col items-center">
+                    <p class="font-black text-xl mb-6 bg-[#111] text-white px-4 py-1">🎯 填寫最終分解結果</p>
+                    
+                    <div class="flex items-center gap-1 md:gap-2 math-font text-2xl md:text-3xl font-black flex-wrap justify-center">
+                        <span class="mr-2">= (</span>
+                        <!-- 括號 1 -->
+                        <input id="ans-f1-x" type="number" class="w-14 md:w-20 px-1 md:px-2 py-2 neo-border text-center focus:bg-yellow-100 focus:outline-none" placeholder="a">
+                        <span>x</span>
+                        <button id="btn-sign1" onclick="toggleSign('btn-sign1')" class="neo-btn bg-gray-100 w-12 h-12 md:w-14 md:h-14 flex items-center justify-center text-3xl pb-1">+</button>
+                        <input id="ans-f1-c" type="number" min="0" oninput="handleAbsInput(this, 'btn-sign1')" class="w-14 md:w-20 px-1 md:px-2 py-2 neo-border text-center focus:bg-yellow-100 focus:outline-none" placeholder="b">
+                        <span class="mx-2">) (</span>
+                        <!-- 括號 2 -->
+                        <input id="ans-f2-x" type="number" class="w-14 md:w-20 px-1 md:px-2 py-2 neo-border text-center focus:bg-yellow-100 focus:outline-none" placeholder="c">
+                        <span>x</span>
+                        <button id="btn-sign2" onclick="toggleSign('btn-sign2')" class="neo-btn bg-gray-100 w-12 h-12 md:w-14 md:h-14 flex items-center justify-center text-3xl pb-1">+</button>
+                        <input id="ans-f2-c" type="number" min="0" oninput="handleAbsInput(this, 'btn-sign2')" class="w-14 md:w-20 px-1 md:px-2 py-2 neo-border text-center focus:bg-yellow-100 focus:outline-none" placeholder="d">
+                        <span>)</span>
+                    </div>
+                    
+                    <div class="mt-6 text-sm font-bold text-slate-600 bg-gray-100 px-4 py-2 border-2 border-dashed border-gray-400">
+                        💡 提示：框內只需填寫正整數（如果是 1 也要填入）。點擊「+」按鈕切換正負號！<br>
+                        （防呆機制：若你在框內直接輸入負號，系統會自動幫你轉移給按鈕）
+                    </div>
+                </div>
+
+                <!-- 回饋訊息與提交按鈕 -->
+                <div id="feedback-area" class="text-center font-black text-xl md:text-2xl min-h-[40px] mb-6 flex items-center justify-center"></div>
+
+                <div class="flex justify-center">
+                    <button id="btn-submit" onclick="checkAnswer()" class="neo-btn bg-[#E11D74] text-white px-10 py-4 text-2xl md:text-3xl font-black tracking-widest">
+                        ⚔️ 斬擊！
+                    </button>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <script>
+        // ===================== 核心輔助函式 =====================
+        function gcd(a, b) {
+            a = Math.abs(a);
+            b = Math.abs(b);
+            return b === 0 ? a : gcd(b, a % b);
+        }
+        function gcd3(a, b, c) {
+            return gcd(a, gcd(b, c));
+        }
+
+        // ===================== 頁籤切換 =====================
+        let currentTab = 'concept';
+        function switchTab(tab) {
+            currentTab = tab;
+            if (tab === 'concept') {
+                document.getElementById('sec-concept').classList.remove('hidden');
+                document.getElementById('sec-challenge').classList.add('hidden');
+                
+                document.getElementById('tab-concept').className = "neo-btn bg-[#FFD60A] px-6 py-3 text-lg font-black rounded-none";
+                document.getElementById('tab-challenge').className = "neo-btn bg-white px-6 py-3 text-lg font-black rounded-none";
+            } else {
+                document.getElementById('sec-concept').classList.add('hidden');
+                document.getElementById('sec-challenge').classList.remove('hidden');
+                
+                document.getElementById('tab-concept').className = "neo-btn bg-white px-6 py-3 text-lg font-black rounded-none";
+                document.getElementById('tab-challenge').className = "neo-btn bg-[#FFD60A] px-6 py-3 text-lg font-black rounded-none";
+                
+                if (wave === 1 && !currentQuestion.a) {
+                    startChallenge();
+                }
+            }
+        }
+
+        // ===================== 實驗室邏輯 (Lab) =====================
+        function runLab() {
+            let a = parseInt(document.getElementById('lab-a').value);
+            let b = parseInt(document.getElementById('lab-b').value);
+            let c = parseInt(document.getElementById('lab-c').value);
+            let res = document.getElementById('lab-result');
+            res.classList.remove('hidden');
+
+            if (isNaN(a) || isNaN(b) || isNaN(c) || a === 0) {
+                res.innerHTML = "<p class='text-[#E11D74] font-black text-xl'>⚠️ 錯誤：請輸入有效的二次多項式係數！(a 不可為 0)</p>";
+                return;
+            }
+
+            let ac = a * c;
+            let m = null, n = null;
+            
+            // 判斷式檢查 (b^2 - 4ac 必須是完全平方數才能整數分解)
+            let discriminant = b * b - 4 * a * c;
+            if (discriminant < 0 || !Number.isInteger(Math.sqrt(discriminant))) {
+                res.innerHTML = `<p class='text-[#E11D74] font-black text-xl'>⚠️ 此多項式無法在「整數」範圍內進行因式分解！</p>`;
+                return;
+            }
+
+            // 窮舉找 m, n
+            if (ac === 0) {
+                m = b; n = 0;
+            } else {
+                for (let i = -Math.abs(ac); i <= Math.abs(ac); i++) {
+                    if (i !== 0 && ac % i === 0) {
+                        let j = ac / i;
+                        if (i + j === b) {
+                            m = i;
+                            n = j;
+                            break;
+                        }
+                    }
+                }
+            }
+
+            if (m === null || n === null) {
+                res.innerHTML = `<p class='text-[#E11D74] font-black text-xl'>⚠️ 找不到整數進行分解！</p>`;
+                return;
+            }
+
+            // 分組提公因式計算
+            // 前兩項：ax^2 + mx = g1 x (p1 x + q1)
+            let g1 = gcd(a, m);
+            let p1 = a / g1;
+            let q1 = m / g1;
+            
+            // 後兩項：nx + c 必須提取出 g2，使得內部括號也是 (p1 x + q1)
+            // 所以 n = g2 * p1  =>  g2 = n / p1
+            let g2 = n / p1;
+
+            // --- 排版字串組合 ---
+            let step1 = `<p class="math-font font-black">${a === 1 ? '' : a}x² ${b >= 0 ? '+ '+b : '- '+Math.abs(b)}x ${c >= 0 ? '+ '+c : '- '+Math.abs(c)}</p>`;
+            
+            let mTerm = m >= 0 ? `+ ${m}x` : `- ${Math.abs(m)}x`;
+            let nTerm = n >= 0 ? `+ ${n}x` : `- ${Math.abs(n)}x`;
+            let step2 = `<p class="math-font mt-2 text-gray-700">= ${a === 1 ? '' : a}x² <span class="text-[#E11D74] font-black">${mTerm} ${nTerm}</span> ${c >= 0 ? '+ '+c : '- '+Math.abs(c)}</p>`;
+            
+            let g1Str = g1 === 1 ? "x" : `${g1}x`;
+            let p1Str = p1 === 1 ? "x" : `${p1}x`;
+            let q1Str = q1 >= 0 ? `+ ${q1}` : `- ${Math.abs(q1)}`;
+            let bracket = `(${p1Str} ${q1Str})`;
+
+            // 處理第二組公因數 (省略數字1，但保留正負號)
+            let group2Str = "";
+            if (g2 !== 0) {
+                let g2Sign = g2 > 0 ? "+" : "-";
+                let g2Val = Math.abs(g2) === 1 ? "" : Math.abs(g2); 
+                group2Str = `<span class="text-[#E11D74] font-black">${g2Sign}</span> ${g2Val}<span class="bg-green-100">${bracket}</span>`;
+            }
+
+            let step3 = `<p class="math-font mt-2 text-gray-700">= <span class="text-blue-600 font-black">${g1Str}</span><span class="bg-green-100">${bracket}</span> ${group2Str}</p>`;
+            
+            let finalG2Term = g2 > 0 ? `+ ${Math.abs(g2)}` : `- ${Math.abs(g2)}`; // 最終組合時，1不能省略
+            let finalBracket = `(${g1Str} ${finalG2Term})`;
+            let step4 = `<p class="math-font mt-4 text-2xl font-black bg-[#06D6A0] text-white inline-block px-4 py-2 neo-border">= ${bracket}${finalBracket}</p>`;
+
+            res.innerHTML = `
+                <div class="mb-5 border-b-2 border-dashed border-gray-300 pb-4">
+                    <span class="bg-[#111] text-white px-3 py-1 font-bold tracking-widest text-sm uppercase">推理分析</span>
+                    <ul class="list-none mt-3 font-bold space-y-1">
+                        <li>🎯 首尾相乘 (a×c) = <span class="math-font text-xl">${a} × ${c} = ${ac}</span></li>
+                        <li>🎯 尋找兩數相乘為 ${ac}，相加為 ${b} 👉 找到 <span class="text-[#E11D74] text-2xl math-font">${m}</span> 與 <span class="text-[#E11D74] text-2xl math-font">${n}</span></li>
+                    </ul>
+                </div>
+                <div class="bg-white p-4">
+                    <span class="bg-[#FFD60A] neo-border px-2 py-1 font-bold text-sm mb-2 inline-block">完整推導過程</span>
+                    ${step1}
+                    ${step2}
+                    ${step3}
+                    ${step4}
+                </div>
+            `;
+        }
+
+        // ===================== 闖關戰鬥邏輯 =====================
+        let wave = 1;
+        let maxWaves = 10;
+        let currentQuestion = {};
+
+        function startChallenge() {
+            wave = 1;
+            loadQuestion();
+        }
+
+        function generateQuestion() {
+            let a, b, c, p, q, r, s;
+            while(true) {
+                // p, r 為正整數 (確保 x 項係數為正)
+                p = Math.floor(Math.random() * 4) + 1; // 1~4
+                r = Math.floor(Math.random() * 4) + 1; // 1~4
+                // q, s 可以是正負數，排除 0
+                q = Math.floor(Math.random() * 9) - 4; // -4~4
+                s = Math.floor(Math.random() * 9) - 4;
+                if (q === 0) q = 2;
+                if (s === 0) s = -3;
+                
+                a = p * r;
+                b = p * s + q * r;
+                c = q * s;
+                
+                // 條件：a不為1, 中間項不為0, 且三項無共同公因數
+                if (a > 1 && b !== 0 && gcd3(a, b, c) === 1) {
+                    return { a, b, c };
+                }
+            }
+        }
+
+        function loadQuestion() {
+            if (wave > maxWaves) {
+                document.getElementById('feedback-area').innerHTML = "<span class='text-[#06D6A0] bg-white px-4 py-2 neo-border'>🎉 大獲全勝！你已通關所有挑戰！</span>";
+                document.getElementById('btn-submit').innerHTML = "🔄 重新開始挑戰";
+                document.getElementById('btn-submit').onclick = startChallenge;
+                return;
+            }
+            
+            currentQuestion = generateQuestion();
+            document.getElementById('wave-counter').textContent = `第 ${wave} / 10 波`;
+            
+            let aStr = currentQuestion.a === 1 ? "x²" : currentQuestion.a + "x²";
+            let bStr = currentQuestion.b > 0 ? `+ ${currentQuestion.b}x` : `- ${Math.abs(currentQuestion.b)}x`;
+            let cStr = currentQuestion.c > 0 ? `+ ${currentQuestion.c}` : `- ${Math.abs(currentQuestion.c)}`;
+            
+            document.getElementById('challenge-poly').textContent = `${aStr} ${bStr} ${cStr}`;
+            
+            // 清空輸入
+            document.getElementById('ans-f1-x').value = '';
+            document.getElementById('ans-f1-c').value = '';
+            document.getElementById('ans-f2-x').value = '';
+            document.getElementById('ans-f2-c').value = '';
+            
+            // 重置按鈕
+            ['btn-sign1', 'btn-sign2'].forEach(id => {
+                let btn = document.getElementById(id);
+                btn.textContent = '+';
+                btn.classList.remove('bg-[#FFD60A]');
+                btn.classList.add('bg-gray-100');
+            });
+
+            document.getElementById('feedback-area').textContent = '';
+            document.querySelectorAll('#draft-area input').forEach(inp => inp.value = '');
+            
+            document.getElementById('btn-submit').innerHTML = "⚔️ 斬擊！";
+            document.getElementById('btn-submit').onclick = checkAnswer;
+        }
+
+        function toggleDraft() {
+            document.getElementById('draft-area').classList.toggle('hidden');
+        }
+
+        // ===================== 輸入防呆機制 =====================
+        function toggleSign(btnId) {
+            let btn = document.getElementById(btnId);
+            if (btn.textContent === '+') {
+                btn.textContent = '-';
+                btn.classList.remove('bg-gray-100');
+                btn.classList.add('bg-[#FFD60A]');
+            } else {
+                btn.textContent = '+';
+                btn.classList.remove('bg-[#FFD60A]');
+                btn.classList.add('bg-gray-100');
+            }
+        }
+
+        function handleAbsInput(el, btnId) {
+            // 如果輸入框內出現負號，立刻清除並將前方的按鈕切換為減號
+            if (el.value.includes('-')) {
+                el.value = el.value.replace(/-/g, '');
+                let btn = document.getElementById(btnId);
+                btn.textContent = '-';
+                btn.classList.remove('bg-gray-100');
+                btn.classList.add('bg-[#FFD60A]');
+            }
+        }
+
+        function checkAnswer() {
+            let f1x = parseInt(document.getElementById('ans-f1-x').value);
+            let f1c = parseInt(document.getElementById('ans-f1-c').value);
+            let f2x = parseInt(document.getElementById('ans-f2-x').value);
+            let f2c = parseInt(document.getElementById('ans-f2-c').value);
+            
+            if (isNaN(f1x) || isNaN(f1c) || isNaN(f2x) || isNaN(f2c)) {
+                document.getElementById('feedback-area').innerHTML = "<span class='text-white bg-[#111] px-4 py-1'>⚠️ 請填滿所有空格（若係數為 1 也要填寫）</span>";
+                return;
+            }
+            
+            let s1 = document.getElementById('btn-sign1').textContent === '+' ? 1 : -1;
+            let s2 = document.getElementById('btn-sign2').textContent === '+' ? 1 : -1;
+            
+            f1c = f1c * s1;
+            f2c = f2c * s2;
+            
+            // 展開檢查 (f1x*x + f1c)(f2x*x + f2c) = (f1x*f2x)x^2 + (f1x*f2c + f2x*f1c)x + (f1c*f2c)
+            let expA = f1x * f2x;
+            let expB = f1x * f2c + f2x * f1c;
+            let expC = f1c * f2c;
+            
+            if (expA === currentQuestion.a && expB === currentQuestion.b && expC === currentQuestion.c) {
+                document.getElementById('feedback-area').innerHTML = "<span class='text-white bg-[#06D6A0] neo-border px-6 py-2'>🎉 斬擊成功！完美分解！</span>";
+                document.getElementById('btn-submit').innerHTML = "➡️ 前往下一波";
+                document.getElementById('btn-submit').onclick = () => {
+                    wave++;
+                    loadQuestion();
+                };
+            } else {
+                document.getElementById('feedback-area').innerHTML = "<span class='text-white bg-[#E11D74] neo-border px-6 py-2'>💥 遭反擊！答案錯誤，請檢查數字或正負號！</span>";
+            }
+        }
+    </script>
+</body>
+</html>
